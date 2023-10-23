@@ -1,0 +1,17 @@
+names:
+- ac
+- capacitor
+- dc
+- diode
+- inductor
+- resistor
+nc: 6
+roboflow:
+  license: CC BY 4.0
+  project: circuit-component-detection
+  url: https://universe.roboflow.com/jonathanapps/circuit-component-detection/dataset/2
+  version: 2
+  workspace: jonathanapps
+test: ./test/images # This path was adjusted
+train: ./train/images # This path was adjusted
+val: ./valid/images # This path was adjusted
