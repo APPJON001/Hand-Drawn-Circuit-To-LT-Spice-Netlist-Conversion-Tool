@@ -1,0 +1,240 @@
+<!-- home.html -->
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    h1 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: black; /* White writing */
+    }
+    h5 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: black; /* White writing */
+    }
+
+    /* Style the image container */
+    #imageContainer {
+        margin-top: 20px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* or 'cover' if you want the image to cover the container */
+        display: flex;
+        justify-content: center;
+        position: relative;
+        cursor: zoom-in;
+    }
+
+    #uploadLabel {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s; /* Adding a smooth transition effect */
+        border: 1px solid black;
+    }
+
+    /* New CSS rule for button hover state */
+    #uploadLabel:hover {
+        background-color: white; /* Change the color to dark gray on hover */
+        color: black;
+        border-color: #888;
+    }
+
+    /* Overlay container to gray out the rest of the page */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999; /* Make sure it appears above other content */
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Style the zoomed image */
+    #zoomedImage {
+        max-width: 95%;
+        max-height: 95%;
+    }
+
+    .uploadButton {
+        margin-top: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .uploadButton:hover {
+        background-color: #0056b3;
+        border-color: #888;
+    }
+
+    /* Style the cross button container */
+    .crossContainer {
+        position: relative;
+        top: 0px;
+        right: 30px;
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        border: 2px solid black;
+        cursor: pointer;
+    }
+
+    /* Style the cross button */
+    .crossButton {
+        font-size: 16px;
+        color: white;
+        border: none;
+        background: none;
+    }
+    /* Center the "Generate Netlist" button */
+    .button-container {
+        display: flex;
+        justify-content: center;
+    }
+    .convertButton {
+        margin-top: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .convertButton:hover {
+        background-color: #0056b3;
+        border-color: #888;
+    }
+</style>
+
+<div class="container">
+    <h1 align="center">Welcome, {{ user.username }}! Ready to Convert Your Schematic?</h1>
+    <br><br>
+    <form align="center" method="POST" enctype="multipart/form-data">
+        <h5 align="center">Upload Your Hand-Drawn Schematic:</h5>
+        <div class="form-group">
+            <input type="file" value="none" id="imageUpload" name="image" accept="image/*" required>
+        </div>
+        <div id="imageContainer">
+            <!-- The uploaded image will be shown here -->
+        </div>
+        {% if processed_image_base64 %}
+        <h2>Processed Image:</h2>
+        <img src="data:image/png;base64,{{ processed_image_base64 }}" alt="Processed Image">
+        {% endif %}
+        <!-- Move the button here -->
+        <div class="button-container">
+            <button type="submit" class="convertButton" id="generateSpiceFile" style="display: none;">
+                Detect Components
+            </button>
+        </div>
+    </form>
+</div>
+<br>
+<br>
+
+
+<!-- Overlay container for zoomed image -->
+<div id="overlay">
+    <img id="zoomedImage" src="" alt="Zoomed Image">
+</div>
+
+<script>
+    // Function to handle image upload and display the image on the app
+    document.getElementById('imageUpload').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function () {
+            const imageContainer = document.getElementById('imageContainer');
+            const img = document.createElement('img');
+            img.src = reader.result;
+            img.style.maxWidth = '300px'; // Optional: Limit the image width for better display
+            imageContainer.innerHTML = ''; // Clear previous image (if any)
+            imageContainer.appendChild(img);
+
+            // Show the cross button and wrap it in a container div
+            const crossContainer = document.createElement('div');
+            crossContainer.classList.add('crossContainer');
+            const crossButton = document.createElement('button');
+            crossButton.innerHTML = '&#10006;'; // You can add a cross icon here instead of 'X'
+            crossButton.classList.add('crossButton');
+            crossContainer.appendChild(crossButton);
+            imageContainer.appendChild(crossContainer);
+
+            // Show the "Generate Spice File" button
+            const generateSpiceFileButton = document.getElementById('generateSpiceFile');
+            generateSpiceFileButton.style.display = 'block'; // Display the button
+            
+            // Add event listener to the "Generate Netlist" button to clear the selected file
+            window.addEventListener('beforeunload', function (event) {
+                const fileInput = document.getElementById('imageUpload');
+                fileInput.value = ''; // Clear the selected file
+            });
+
+            // Add event listener to enable zooming on click
+            img.addEventListener('click', function () {
+                const overlay = document.getElementById('overlay');
+                const zoomedImage = document.getElementById('zoomedImage');
+                zoomedImage.src = img.src; // Set the source of the zoomed image
+                overlay.style.display = 'flex'; // Show the overlay
+
+                // Function to close the zoomed image
+                overlay.addEventListener('click', function (event) {
+                    if (event.target === overlay) {
+                        overlay.style.display = 'none'; // Hide the overlay
+                    }
+                });
+            });
+
+            // Add event listener to the cross button to remove the image and "Generate Spice File" button
+            crossButton.addEventListener('click', function () {
+                crossButton.remove();
+                crossContainer.remove();
+                img.remove();
+                // Hide the frame and clear the "Generate Spice File" button when the image is removed
+                // Hide the Generate spice file button 
+                generateSpiceFileButton.style.display = 'none'; // Display the button
+
+                const fileInput = document.getElementById('imageUpload');
+                fileInput.value = ''; // Clear the selected file
+
+                // Hide the "Upload Drawing" button after an image is uploaded
+                // Clear the file input value to allow re-uploading the same image
+                event.target.value = '';
+            });
+
+            // Hide the "Upload Drawing" button after an image is uploaded
+            const uploadLabel = document.getElementById('uploadLabel');
+            uploadLabel.style.display = 'none';
+
+            // Clear the file input value to allow re-uploading the same image
+            event.target.value = '';
+
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+{% endblock %}

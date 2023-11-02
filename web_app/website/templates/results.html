@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+{% block content %}
+<style>
+
+    h1 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: black; /* White writing */
+    }
+    h5 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: black; /* White writing */
+    }
+
+    /* Style the image container */
+    #imageContainer {
+        margin-top: 20px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* or 'cover' if you want the image to cover the container */
+        display: flex;
+        justify-content: center;
+        position: relative;
+        cursor: zoom-in;
+    }
+
+    /* Style the upload button */
+    #imageUpload {
+        display: none; /* Hide the default upload button */
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #uploadLabel {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s; /* Adding a smooth transition effect */
+        border: 1px solid black;
+    }
+
+    /* New CSS rule for button hover state */
+    #uploadLabel:hover {
+        background-color: white; /* Change the color to dark gray on hover */
+        color: black;
+        border-color: #888;
+    }
+
+    /* Overlay container to gray out the rest of the page */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999; /* Make sure it appears above other content */
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Style the zoomed image */
+    #zoomedImage {
+        max-width: 95%;
+        max-height: 95%;
+    }
+
+    .uploadButton {
+        margin-top: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .uploadButton:hover {
+        background-color: #0056b3;
+        border-color: #888;
+    }
+
+    .convertButton {
+        margin-top: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .convertButton:hover {
+        background-color: #0056b3;
+        border-color: #888;
+        color: white;
+    }
+
+    /* Style for the image container */
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px; /* Adjust the gap between images */
+    }
+
+    /* Style for individual image frames */
+    .image-frame {
+        max-width: 210px;
+        border: 2px solid #ddd; /* Border style */
+        border-radius: 10px; /* Rounded edges */
+        overflow: hidden;
+    }
+
+    /* Style for the image itself */
+    .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+</style>
+<br>
+<br>
+<br>
+<h2 align="center">Here's a process overview if you're interested ...</h2>
+<br>
+<div class="image-container">
+    <!-- Top Row Images -->
+    <div class="image-frame">
+        <img class="image" src="../static/images/og_image.png" alt="Image 1">
+    </div>
+    <div class="image-frame">
+        <img class="image" src="../static/images/pp_image.png" alt="Image 2">
+    </div>
+    <div class="image-frame">
+        <img class="image" src="../static/images/predictions.png" alt="Image 3">
+    </div>
+    <!-- Bottom Row Images -->
+    <div class="image-frame">
+        <img class="image" src="../static/images/component_rem_img.png" alt="Image 4">
+    </div>
+    <div class="image-frame">
+        <img class="image" src="../static/images/detected_connections_image.png" alt="Image 5">
+    </div>
+</div>
+<br>
+<br>
+<div align="center">
+    <!-- Replace 'your_download_endpoint' with the actual URL where you serve the file -->
+    <a href="{{ url_for('views.download_file') }}" class="convertButton" id="downloadSpiceFile" download>
+        Download Netlist
+    </a>
+</div>
+{% endblock %}

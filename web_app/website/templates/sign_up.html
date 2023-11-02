@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock%}
+{% block content%}
+<div class="container" style="margin-bottom: -30px; border-radius: 0px"> <!-- Remove margin-bottom -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="d-flex justify-content-center"> <!-- Center the card -->
+                <div class="card mt-5" style="max-width: 350px; border-radius: 0px">
+
+                    <div class="card-body" style="margin-bottom: 0px;">
+                        <img src="../static/images/thesis_logo.png" alt="could not show image" class="img-fluid" style="margin-top: 20px;">
+                        <br></br>
+
+                        <form method="POST">
+                            <div class="form-group" style="margin-left: 20px; margin-right: 20px; margin-bottom: 5px;">
+                                <label for="email"></label>
+                                <input style="font-size: 14px;" type="email" class="form-control" id="email" name="email" placeholder="Email address">
+                            </div>
+                            <div class="form-group" style="margin-left: 20px; margin-right: 20px; margin-bottom: 5px;">
+                                <label for="firstName"></label>
+                                <input style="font-size: 14px;" type="text" class="form-control" id="firstName" name="firstName" placeholder="First name">
+                            </div>
+                            <div class="form-group" style="margin-left: 20px; margin-right: 20px; margin-bottom: 5px;">
+                                <label for="username"></label>
+                                <input style="font-size: 14px;"  type="text" class="form-control" id="username" name="username" placeholder="Username">
+                            </div>
+
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+                            <div class="form-group" style="margin-left: 20px; margin-right: 20px; margin-bottom: 5px;">
+                                <label for="password"></label>
+                                <div class="input-group"> <!-- Wrap the input field and the eye icon in an input-group -->
+                                    <input style="font-size: 14px;" type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                    <div class="input-group-append"> <!-- Add the eye icon as an input-group-append -->
+                                        <span class="input-group-text" onclick="togglePasswordVisibility()" style="cursor: pointer;"> <!-- Use cursor: pointer for the hand cursor on hover -->
+                                            <i class="far fa-eye-slash"></i> <!-- The eye icon from Font Awesome (outline version) -->
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row justify-content-center" style="margin-left: 5px; margin-right: 5px;">
+                                <div class="col-12 text-center"> <!-- Adjust column width to control button position -->
+                                    <div class="d-flex justify-content-center"> <!-- Center the button -->
+                                        <button style="font-size: 13px;" type="submit" class="btn btn-primary btn-fixed-width">Sign Up</button>
+                                    </div>
+                                </div>
+                            </div>                       
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container"> <!-- Remove margin-bottom and extra row/column -->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="d-flex justify-content-center"> <!-- Center the card -->
+                <div class="card mt-5" style="width: 350px; height: 70px; border-radius: 0px">
+                    <div class="card-body">
+                        <form method="POST">
+                            <p style="text-align: center; font-size: 15px; font-family: Arial, sans-serif;"> <!-- Center the text and apply custom font size and font-family -->
+                                <a>Already have an account? </a>
+                                <a href="/login">Log in</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS (optional if you require JS features) -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            document.querySelector(".input-group-text i").classList.remove("fa-eye-slash");
+            document.querySelector(".input-group-text i").classList.add("fa-eye");
+        } else {
+            passwordInput.type = "password";
+            document.querySelector(".input-group-text i").classList.remove("fa-eye");
+            document.querySelector(".input-group-text i").classList.add("fa-eye-slash");
+        }
+    }
+</script>
+
+<style>
+    /* Custom CSS for the fixed-width button */
+    .btn-fixed-width {
+        width: 320px;
+    }
+</style>
+{% endblock %}

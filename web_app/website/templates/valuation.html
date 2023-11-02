@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% block title %}Valuation{% endblock %}
+{% block content %}
+<style>
+
+    h1 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: black; /* White writing */
+    }
+    h5 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: black; /* White writing */
+    }
+
+    /* Style the image container */
+    #imageContainer {
+        margin-top: 20px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* or 'cover' if you want the image to cover the container */
+        display: flex;
+        justify-content: center;
+        position: relative;
+        cursor: zoom-in;
+    }
+
+    /* Style the upload button */
+    #processValues {
+        display: none; /* Hide the default upload button */
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #uploadLabel {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: black;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s; /* Adding a smooth transition effect */
+        border: 1px solid black;
+    }
+
+    /* New CSS rule for button hover state */
+    #uploadLabel:hover {
+        background-color: white; /* Change the color to dark gray on hover */
+        color: black;
+        border-color: #888;
+    }
+
+    /* Overlay container to gray out the rest of the page */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999; /* Make sure it appears above other content */
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Style the zoomed image */
+    #zoomedImage {
+        max-width: 95%;
+        max-height: 95%;
+    }
+
+    .uploadButton {
+        margin-top: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .uploadButton:hover {
+        background-color: #0056b3;
+        border-color: #888;
+    }
+
+    /* Style the cross button container */
+    .crossContainer {
+        position: relative;
+        top: 0px;
+        right: 30px;
+        width: 30px;
+        height: 30px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        border: 2px solid black;
+        cursor: pointer;
+    }
+
+    /* Style the cross button */
+    .crossButton {
+        font-size: 16px;
+        color: white;
+        border: none;
+        background: none;
+    }
+
+    .convertButton {
+        margin-top: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .convertButton:hover {
+        background-color: #0056b3;
+        border-color: #888;
+    }
+
+    .frame-container {
+        border: 1px solid #ccc;
+        margin-top: 0px;
+        margin-right: 20px;
+        border-radius: 10px;
+        padding: 10px;
+        width: 50%; /* Set the width to 50% for each frame container */
+    }
+    
+    .input-row {
+        display: flex;
+        align-items: center; /* Vertically center-align label and input/select */
+        margin-bottom: 10px;
+    }
+    /* Style for the input labels */
+    .valueEntries {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold; /* Make the labels bold */
+    }
+
+    /* Style for the input fields */
+    .inputValues {
+        display: block;
+        width: 100%; /* Make the input fields expand to full width */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .dropdownValues {
+        display: block;
+        width: 100%; /* Make the input fields expand to full width */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* CSS for the entries container with scrollbar */
+    .entries-container {
+        max-height: 400px; /* Adjust the maximum height as needed */
+        width: auto;
+        overflow-y: auto; /* Add a vertical scrollbar when content overflows */
+    }
+
+    /* Add a media query to stack the frames on small screens */
+    @media screen and (max-width: 768px) {
+        .frame-container {
+            width: 100%; /* Set the width to 100% for each frame container on small screens */
+            margin-right: 0; /* Remove right margin to make them full width */
+            max-height: none; /* Remove max height on small screens */
+        }
+
+        .entries-container {
+            max-height: none; /* Remove max height for entries container on small screens */
+            max-width: none; /* Remove max width for entries container on small screens */
+        }
+
+        .input-row {
+            flex-direction: column; /* Stack input rows vertically on small screens */
+        }
+    }
+
+</style>
+
+<!-- Add this HTML for the error message container -->
+<div id="errorMessageContainer" class="alert alert-danger" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Error:</strong> Please fill in all fields with valid float values.
+</div>
+
+
+<h1 align="center">We got the components!</h1>
+<h5 align="center">So ... we just need you to specify the values.</h5>
+<!-- Create a container for the entire content, centered horizontally -->
+<div style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+    <!-- Create a frame container for the image on the left -->
+    <div class="frame-container">
+        <div align="center">
+            <img src="../static/images/displayed_predictions.png" alt="Uploaded Drawing" style="max-height: 400px; width: auto;">
+        </div>
+    </div>
+
+    <!-- Create a frame container for the entries on the right -->
+    <div class="frame-container" style="max-height: 420px; max-width: 400px;">
+        <div class="entries-container">
+            <form method="POST" action="{{ url_for('views.results') }}">
+                {% for index, label, symbol in indexed_labels %}
+                    <div class="input-row">
+                        {% if symbol == 'None' %}
+                            <label class="valueEntries" style="width: 200px;" for="label_{{ index }}">Enter model for {{ label }}:</label>
+                            <select class="dropdownValues" id="label_{{ index }}" name="label_{{ index }}" style="width: 150px;">
+                                <option value="option1">1N4148</option>
+                            </select>
+                        {% else %}
+                            <label class="valueEntries" style="width: 200px;" for="label_{{ index }}">Enter value for {{ label }} ({{ symbol }}):</label>
+                            <input class="inputValues" type="number" id="label_{{ index }}" name="label_{{ index }}" min = "0" step="any" style="width: 150px;" required>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="button-container" align="center">
+                    <button type="submit" class="convertButton" id="generateSpiceFile">
+                        Generate Netlist
+                    </button>
+                </div>
+            </form>     
+        </div>
+    </div>
+</div>
+{% endblock %}
