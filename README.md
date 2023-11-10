@@ -1,5 +1,5 @@
 # Hi There! 
-s
+
 This repository is still under construction - not all the training data/labels are present. 
 However, the web application should run once requirements are installed. 
 
