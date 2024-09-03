@@ -30,3 +30,16 @@ Once the requirements are installed, the web application can be run by navigatin
 Ensure that the script listens on an unused port. Navigate to the terminal-specified page in your favourite browser to use.
 
 Note: This code currently only works on MacOS. A Windows-compatible version should be released soon.
+
+
+# License
+
+Copyright (c) 2023-2024 Jonathan Apps
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software **WITH CERTAIN RESTRICTIONS**. The Software 
+may be modified for personal or corporate use, but shall not be used for
+distribution, sublicensing, and/or selling. Please ensure that you make 
+proper reference to this repository and its author (Jonathan Apps) whenever/wherever it is used.
+Please feel free to contact me if further information is required.
