@@ -1,8 +1,16 @@
-# Introduction
+# Honours Thesis Project: Circuit Schematic Detection and Conversion
 
-This repository holds the code for my honours thesis project. Please star this repository if you find the included research helpful.
+Welcome to the repository for my honours thesis project! If you find this research helpful, please consider starring this repository.
 
-Object detection with a state-of-the-art YOLOv8 model was used to detect components in a given hand drawn circuit schematic. Advanced image processing techniques (The Hough Transform, Pixel Density Analysis, Pixel Tracing, etc.) were then applied to determine how components were connected together. Information gathered from the previous stages was then used to generate a simulatable netlist in LT-Spice format. Overall, high conversion accuracies were achieved for schematics with non-terminalled components. Components that were terminaled (diodes and DC sources) were not determined accurately, since minimal focus was given to this subset. 
+# Project Overview
+
+This project involves detecting components in hand-drawn circuit schematics using the state-of-the-art YOLOv8 object detection model. Here’s a brief overview of the process:
+
+* Component Detection: YOLOv8 detects various components within the circuit schematic.
+* Image Processing: Advanced techniques such as Hough Transform, Pixel Density Analysis, and Pixel Tracing are used to determine how the components are connected.
+* Netlist Generation: The processed information is used to create a netlist in LT-Spice format, making the schematic ready for simulation.
+
+The system achieves high accuracy in converting schematics, especially for non-terminal components. Graphically terminalled components (like diodes and DC sources) were less accurately identified due to limited training on this subset.
 
 The full system pipeline is depicted graphically below:
 
@@ -10,13 +18,13 @@ The full system pipeline is depicted graphically below:
 
 ![image](https://github.com/user-attachments/assets/bd4bb833-22aa-4b13-b064-0a5944d7ecbb)
 
-Python, Flask, and SQLAlchemy made up the foundation of the web-application, which facilitated the entirety of the pipeline process.
+The web application is built using Python, Flask, and SQLAlchemy. These technologies support the entire pipeline process, from detection to netlist generation.
 
 # More
 
 Please note that this repository is based on my research conducted at the University of Cape Town. I have included my thesis below for additional detail. 
 
-[JAPPSTHESIS.pdf](https://github.com/user-attachments/files/16644417/JAPPSTHESIS.pdf)
+[Thesis.pdf](https://github.com/user-attachments/files/16644417/JAPPSTHESIS.pdf)
 
 # Installation
 
@@ -27,10 +35,9 @@ Once the requirements are installed, the web application can be run by navigatin
 
 > python3 main.py
 
-Ensure that the script listens on an unused port. Navigate to the terminal-specified page in your favourite browser to use.
+Ensure that the process runs on an unused port. Navigate to the terminal-specified page in your favourite browser to access the web application.
 
-Note: This code currently only works on MacOS. A Windows-compatible version should be released soon.
-
+Note: This code currently only works on MacOS. A Windows-compatible version may become available in the future.
 
 # License
 
