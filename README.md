@@ -10,7 +10,7 @@ This project involves detecting components in hand-drawn circuit schematics usin
 * Image Processing: Advanced techniques such as Hough Transform, Pixel Density Analysis, and Pixel Tracing are used to determine how the components are connected.
 * Netlist Generation: The processed information is used to create a netlist in LT-Spice format, making the schematic ready for simulation.
 
-The system achieves high accuracy in converting schematics, especially for non-terminal components. Graphically terminalled components (like diodes and DC sources) were less accurately identified due to limited training on this subset.
+The system achieves high accuracy in converting schematics with non-graphically-terminalled components. Graphically terminalled components (like diodes and DC sources) were less accurately identified due to limited training on this subset.
 
 The full system pipeline is depicted graphically below:
 
